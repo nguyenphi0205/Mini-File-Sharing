@@ -1,7 +1,12 @@
 package com.dxc.msf.dao;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -24,7 +29,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public boolean CreateUser(UserDTO user) {
+	public boolean createUser(UserDTO user) {
 		try {
 			UUID uid = UUID.randomUUID();
 			user.setUserID(uid.toString());
@@ -37,7 +42,51 @@ public class UserDAOImpl implements UserDAO {
 		} catch (Exception e) {
 			return false;
 		}
+	}
 
+	@Override
+	public List<UserDTO> getListUser() {
+		Session session = getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			Query query = session.createQuery("select u from User u");
+			List<UserDTO> list = query.list();
+			transaction.commit();
+			return list;
+		} catch (Exception e) {
+			return null;
+		} finally {
+			session.close();
+		}
+		
+	}
+
+	@Override
+	public boolean updateUser(UserDTO user) {
+		try {
+			 Session session = getSessionFactory().openSession();
+			 Transaction transaction = session.beginTransaction();
+			 session.update(user);
+			 transaction.commit();
+			 session.close();
+			 return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean deleteUser(UserDTO user) {
+		try {
+			Session session = getSessionFactory().openSession();
+			Transaction transaction=  session.beginTransaction();
+			session.delete(user);
+			transaction.commit();
+			session.close();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }
