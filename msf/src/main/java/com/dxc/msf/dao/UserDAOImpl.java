@@ -2,6 +2,7 @@ package com.dxc.msf.dao;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dxc.msf.model.UserDTO;
+
+import net.sourceforge.jtds.jdbc.DateTime;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -31,10 +34,13 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public boolean createUser(UserDTO user) {
 		try {
+			
 			UUID uid = UUID.randomUUID();
 			user.setUserID(uid.toString());
+			user.setCreateDate(new Date());
+			user.setLastModifyDate(new Date());
 			Session session = getSessionFactory().openSession();
-			Transaction transaction = session.beginTransaction();
+			Transaction transaction = session.beginTransaction();			
 			session.save(user);
 			transaction.commit();
 			session.close();
