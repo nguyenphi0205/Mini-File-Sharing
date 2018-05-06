@@ -1,6 +1,6 @@
 package com.dxc.msf.dao;
 
-
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -8,10 +8,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import com.dxc.msf.model.FileDTO;
+
+import com.dxc.msf.model.DownloadDTO;
 
 @Repository
-public class FileDAOImpl implements FileDAO {
+public class DownloadFileDAOImpl implements DownloadFileDAO {
 
 	@Autowired
 	SessionFactory sessionfactory;
@@ -25,11 +26,12 @@ public class FileDAOImpl implements FileDAO {
 	}
 
 	@Override
-	public boolean AddUploadFile(FileDTO file) {
+	public Boolean AddDownloadFile(DownloadDTO download) {
 		try {
 			Session session = sessionfactory.openSession();
-			Transaction transaction =session.beginTransaction();
-			session.save(file);
+			Transaction transaction = session.beginTransaction();
+			download.setDownloadDate(new Date());
+			session.save(download);
 			transaction.commit();
 			session.close();
 			return true;
@@ -39,11 +41,11 @@ public class FileDAOImpl implements FileDAO {
 	}
 
 	@Override
-	public List<FileDTO> getListFile() {
+	public List<DownloadDTO> getListDownload() {
 		Session session = sessionfactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			List<FileDTO> list = (List<FileDTO>) session.createQuery("from Files").list();
+			List<DownloadDTO> list = (List<DownloadDTO>) session.createQuery("from Downloads").list();
 			transaction.commit();
 			session.close();
 			return list;
@@ -51,7 +53,6 @@ public class FileDAOImpl implements FileDAO {
 			e.printStackTrace();
 			return null;
 		}
-		
 	}
 
 }

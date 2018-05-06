@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
@@ -15,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dxc.msf.dao.DownloadFileDAO;
 import com.dxc.msf.dao.FileDAO;
+import com.dxc.msf.model.DownloadDTO;
 import com.dxc.msf.model.FileDTO;
 
 @Service
@@ -24,6 +27,8 @@ public class FileServiceImpl implements FileService {
 	ServletContext servletContext;
 	@Autowired
 	FileDAO fileDao;
+	@Autowired
+	DownloadFileDAO downloadFileDAO;
 
 	public ServletContext getContext() {
 		return servletContext;
@@ -56,7 +61,7 @@ public class FileServiceImpl implements FileService {
 				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(uploadFile));
 				bos.write(fileBytes);
 				bos.close();
-//				AddUploadFile(fileDto);
+				// AddUploadFile(fileDto);
 				return true;
 
 			} catch (Exception e) {
@@ -129,6 +134,27 @@ public class FileServiceImpl implements FileService {
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public List<FileDTO> getListFile() {
+		return fileDao.getListFile();
+	}
+
+	@Override
+	public boolean addDownloadFile(DownloadDTO download) {
+			boolean susscess = downloadFileDAO.AddDownloadFile(download);
+			if (susscess) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+	@Override
+	public List<DownloadDTO> getListDownloadFile() {
+	
+		return downloadFileDAO.getListDownload();
 	}
 
 }

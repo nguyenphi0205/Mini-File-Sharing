@@ -1,13 +1,6 @@
 package com.dxc.msf.dao;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-import java.util.logging.Logger;
-
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -15,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dxc.msf.model.UserDTO;
-
-import net.sourceforge.jtds.jdbc.DateTime;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -34,13 +25,8 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public boolean createUser(UserDTO user) {
 		try {
-			
-			UUID uid = UUID.randomUUID();
-			user.setUserID(uid.toString());
-			user.setCreateDate(new Date());
-			user.setLastModifyDate(new Date());
 			Session session = getSessionFactory().openSession();
-			Transaction transaction = session.beginTransaction();			
+			Transaction transaction = session.beginTransaction();
 			session.save(user);
 			transaction.commit();
 			session.close();
@@ -55,28 +41,28 @@ public class UserDAOImpl implements UserDAO {
 		Session session = getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		try {
-			Query query = session.createQuery("select u from User u");
-			List<UserDTO> list = query.list();
+			List<UserDTO> list = (List<UserDTO>) session.createQuery("from Users").list();
 			transaction.commit();
 			return list;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		} finally {
 			session.close();
 		}
-		
 	}
 
 	@Override
 	public boolean updateUser(UserDTO user) {
 		try {
-			 Session session = getSessionFactory().openSession();
-			 Transaction transaction = session.beginTransaction();
-			 session.update(user);
-			 transaction.commit();
-			 session.close();
-			 return true;
+			Session session = getSessionFactory().openSession();
+			Transaction transaction = session.beginTransaction();
+			session.update(user);
+			transaction.commit();
+			session.close();
+			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -85,8 +71,9 @@ public class UserDAOImpl implements UserDAO {
 	public boolean deleteUser(UserDTO user) {
 		try {
 			Session session = getSessionFactory().openSession();
-			Transaction transaction=  session.beginTransaction();
-			session.delete(user);
+			Transaction transaction = session.beginTransaction();
+			user.setUserActive(0);
+			session.update(user);
 			transaction.commit();
 			session.close();
 			return true;

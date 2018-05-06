@@ -5,51 +5,70 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import net.sourceforge.jtds.jdbc.DateTime;
-
-@Entity
-@Table(name="Users")
+@Entity(name = "Users")
 public class UserDTO extends AbstractDTO {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@Column(name="user_id")
-	private String userID;
-	
-	@Column(name="user_name")
-	private String userName;
-	
-	@Column(name="password")
-	private String userPassword;
-	
-	@Column(name="is_admin")
-	private String isAdmin;
-	
-	@Column(name="level_user")
-	private String userLevel;
-	
-	@Column(name="email")
-	private String userEmail;
-	
-	@Column(name="createDate")
-	private Date createDate;
-	
-	@Column(name="deleteDate")
-	private Date deleteDate;
-	
-	@Column(name="lastModifiedDate")
-	private Date lastModifyDate;
-	
 
-	public String getUserID() {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="userID")
+	private int userID;
+
+	@Column(name = "userName")
+	private String userName;
+
+	@Column(name = "userPassword")
+	private String userPassword;
+
+	@Column(name = "isAdmin")
+	private String isAdmin;
+
+	@Column(name = "userRank")
+	private String userRank;
+
+	@Column(name = "userActive")
+	private Integer userActive;
+
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "createDate")
+	private Date createDate;
+
+	@Column(name = "deleteDate")
+	private Date deleteDate;
+
+	@Column(name = "lastModifyDate")
+	private Date lastModifyDate;
+
+	public int getUserID() {
 		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserPassword() {
+		return userPassword;
+	}
+
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
 	}
 
 	public String getIsAdmin() {
@@ -60,20 +79,28 @@ public class UserDTO extends AbstractDTO {
 		this.isAdmin = isAdmin;
 	}
 
-	public String getUserLevel() {
-		return userLevel;
+	public String getUserRank() {
+		return userRank;
 	}
 
-	public void setUserLevel(String userLevel) {
-		this.userLevel = userLevel;
+	public void setUserRank(String userRank) {
+		this.userRank = userRank;
 	}
 
-	public String getUserEmail() {
-		return userEmail;
+	public Integer getUserActive() {
+		return userActive;
 	}
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
+	public void setUserActive(Integer userActive) {
+		this.userActive = userActive;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Date getCreateDate() {
@@ -102,26 +129,6 @@ public class UserDTO extends AbstractDTO {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public void setUserID(String userID) {
-		this.userID = userID;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
 	}
 
 	@Override

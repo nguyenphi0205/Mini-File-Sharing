@@ -19,8 +19,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@RequestMapping(value = "/user/create", method = RequestMethod.POST, produces = {
-			"application/json; charset=UTF-8" })
+	@RequestMapping(value = "/user/create", method = RequestMethod.POST, produces = { "application/json; charset=UTF-8" })
 	public @ResponseBody String eventCreate(@RequestBody UserDTO user) {
 		boolean success = userService.createUser(user);
 		if (success) {
@@ -37,4 +36,23 @@ public class UserController {
 		return json;
 	}
 
+	@RequestMapping(value = "/user/edit", method = RequestMethod.POST, produces = { "application/json; charset=UTF-8" })
+	public @ResponseBody String eventEdit(@RequestBody UserDTO user) {
+		boolean success = userService.updateUser(user);
+		if (success) {
+			return "{\"status\": \"OK\"}";
+		} else {
+			return "{\"status\": \"Failed\"}";
+		}
+	}
+
+	@RequestMapping(value = "/user/delete", method = RequestMethod.POST, produces = { "application/json; charset=UTF-8" })
+	public @ResponseBody String eventDelete(@RequestBody UserDTO user) {
+		boolean success = userService.deleteUser(user);
+		if (success) {
+			return "{\"status\": \"OK\"}";
+		} else {
+			return "{\"status\": \"Failed\"}";
+		}
+	}
 }

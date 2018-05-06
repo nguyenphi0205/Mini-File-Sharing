@@ -12,23 +12,20 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDAO userDAO;
-	
+
 	@Override
 	public boolean createUser(UserDTO user) {
-		if(!user.getUserName().isEmpty() && !user.getUserPassword().isEmpty())
-		{
-		boolean success = userDAO.createUser(user);
-			if(success) {
+		if (!user.getUserName().isEmpty() && !user.getUserPassword().isEmpty()) {
+			boolean success = userDAO.createUser(user);
+			if (success) {
 				return true;
-			}
-			else {
+			} else {
 				return false;
 			}
-		}
-		else {
+		} else {
 			return false;
 		}
-		
+
 	}
 
 	@Override
@@ -38,14 +35,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean updateUser(UserDTO user) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = userDAO.updateUser(user);
+		if (success) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
 	public boolean deleteUser(UserDTO user) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = userDAO.deleteUser(user);
+		if (success) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-
 }

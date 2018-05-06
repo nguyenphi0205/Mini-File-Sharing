@@ -1,10 +1,10 @@
 package com.dxc.msf.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,64 +14,42 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import net.sourceforge.jtds.jdbc.DateTime;
-
-@Entity(name = "Files")
-public class FileDTO extends AbstractDTO {
-
+@Entity(name="Files")
+public class FileDTO extends AbstractDTO{
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@Column(name = "file_id")
-	private String fileID;
-
-	@Column(name = "file_name")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="fileID")
+	private int fileID;
+	
+	@Column(name = "fileName")
 	private String fileName;
-
+	
+	@Column(name = "fileSize")
+	private Double fileSize;
+	
+	@Column(name = "description")
+	private String description;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id", nullable = false)
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	@JsonDeserialize(as = UserDTO.class)
-	private UserDTO userPK;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "categories_id", nullable = false)
+	@JoinColumn(name = "categoryID", nullable = false)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@JsonDeserialize(as = CategoryDTO.class)
-	private CategoryDTO categoryPK;
-
-	@Column(name = "file_size")
-	private int fileSize;
-
-	@Column(name = "comment")
-	private String comment;
-
-	@Column(name = "createDate")
-	private Date createFileDate;
-
-	@Column(name = "deleteDate")
-	private Date deleteFileDate;
-
-	@Column(name = "lastModifiedDate")
-	private Date lastModifyDate;
-	@Column(name = "filePath")
-	private String filePath;
+	private CategoryDTO categoryPk;
 	
-	public String getFilePath() {
-		return filePath;
-	}
-
-	public void setFilePath(String filePath) {
-		this.filePath = filePath;
-	}
-
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "userID", nullable = false)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@JsonDeserialize(as = UserDTO.class)
+	private UserDTO userPk;
 	
-
-	public String getFileID() {
+	public int getFileID() {
 		return fileID;
 	}
 
-	public void setFileID(String fileID) {
+	public void setFileID(int fileID) {
 		this.fileID = fileID;
 	}
 
@@ -83,50 +61,40 @@ public class FileDTO extends AbstractDTO {
 		this.fileName = fileName;
 	}
 
-	public int getFileSize() {
+	public Double getFileSize() {
 		return fileSize;
 	}
 
-	public void setFileSize(int fileSize) {
+	public void setFileSize(Double fileSize) {
 		this.fileSize = fileSize;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public CategoryDTO getCategoryPk() {
+		return categoryPk;
+	}
+
+	public void setCategoryPk(CategoryDTO categoryPk) {
+		this.categoryPk = categoryPk;
+	}
+
+	public UserDTO getUserPk() {
+		return userPk;
+	}
+
+	public void setUserPk(UserDTO userPk) {
+		this.userPk = userPk;
 	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	
-
-	public Date getCreateFileDate() {
-		return createFileDate;
-	}
-
-	public void setCreateFileDate(Date createFileDate) {
-		this.createFileDate = createFileDate;
-	}
-
-	public Date getDeleteFileDate() {
-		return deleteFileDate;
-	}
-
-	public void setDeleteFileDate(Date deleteFileDate) {
-		this.deleteFileDate = deleteFileDate;
-	}
-
-	public Date getLastModifyDate() {
-		return lastModifyDate;
-	}
-
-	public void setLastModifyDate(Date lastModifyDate) {
-		this.lastModifyDate = lastModifyDate;
 	}
 
 	@Override
@@ -134,5 +102,4 @@ public class FileDTO extends AbstractDTO {
 		ObjectMapper objectmapper = new ObjectMapper();
 		return objectmapper.writeValueAsString(this);
 	}
-
 }

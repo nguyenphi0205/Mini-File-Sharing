@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,79 +17,64 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity(name="Downloads")
-public class DownloadDTO extends AbstractDTO {
+public class DownloadDTO extends AbstractDTO{
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="download_id")
-	private String downloadID;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="downloadID")
+	private int downloadID;
+	
+	@Column(name = "downloadDate")
+	private Date downloadDate;
 	
 	@ManyToOne(fetch =FetchType.EAGER)
-	@JoinColumn(name="user_id" , nullable = false)
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-	@JsonDeserialize(as=UserDTO.class)
-	private UserDTO userID;
-	
-	@ManyToOne(fetch =FetchType.EAGER)
-	@JoinColumn(name="file_id" , nullable = false)
+	@JoinColumn(name="fileID" , nullable = false)
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	@JsonDeserialize(as=FileDTO.class)
-	private FileDTO fileID;
+    private FileDTO downloadFilePk;
+    
+    @ManyToOne(fetch =FetchType.EAGER)
+	@JoinColumn(name="userID" , nullable = false)
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+	@JsonDeserialize(as=UserDTO.class)
+    private UserDTO downloadUserPk;
 	
-	@Column(name="createDate")
-	private Date createDate;
-	
-	@Column(name="createdBy")
-	private String createdBy;
-	
-	@Column(name="lastModifiedDate")
-	private Date lastModifiedDate;
-	
-	public String getDownloadID() {
+	public int getDownloadID() {
 		return downloadID;
 	}
 
-	public void setDownloadID(String downloadID) {
+	public void setDownloadID(int downloadID) {
 		this.downloadID = downloadID;
 	}
 
-	public UserDTO getUserID() {
-		return userID;
+	public Date getDownloadDate() {
+		return downloadDate;
 	}
 
-	public void setUserID(UserDTO userID) {
-		this.userID = userID;
+	public void setDownloadDate(Date downloadDate) {
+		this.downloadDate = downloadDate;
 	}
 
-	public FileDTO getFileID() {
-		return fileID;
+	public FileDTO getDownloadFilePk() {
+		return downloadFilePk;
 	}
 
-	public void setFileID(FileDTO fileID) {
-		this.fileID = fileID;
+	public void setDownloadFilePk(FileDTO downloadFilePk) {
+		this.downloadFilePk = downloadFilePk;
 	}
 
-	public String getCreatedBy() {
-		return createdBy;
+	public UserDTO getDownloadUserPk() {
+		return downloadUserPk;
 	}
 
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
+	public void setDownloadUserPk(UserDTO downloadUserPk) {
+		this.downloadUserPk = downloadUserPk;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public Date getLastModifiedDate() {
-		return lastModifiedDate;
-	}
-
-	public void setLastModifiedDate(Date lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
@@ -95,5 +82,6 @@ public class DownloadDTO extends AbstractDTO {
 		ObjectMapper objectmapper =new ObjectMapper();
 		return objectmapper.writeValueAsString(this);
 	}
+	
 
 }

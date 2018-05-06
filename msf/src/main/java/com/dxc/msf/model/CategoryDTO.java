@@ -1,28 +1,33 @@
 package com.dxc.msf.model;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 @Entity(name="Categories")
-public class CategoryDTO extends AbstractDTO {
+public class CategoryDTO extends AbstractDTO{
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="categories_id")
-	private String categoryID;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="categoryID")
+	private int categoryID;
 	
-	@Column(name="categories_name")
+	@Column(name = "categoryName")
 	private String categoryName;
 	
-	public String getCategoryID() {
+	public int getCategoryID() {
 		return categoryID;
 	}
 
-	public void setCategoryID(String categoryID) {
+	public void setCategoryID(int categoryID) {
 		this.categoryID = categoryID;
 	}
 
@@ -38,12 +43,10 @@ public class CategoryDTO extends AbstractDTO {
 		return serialVersionUID;
 	}
 
-
-
 	@Override
 	public String toJSon() throws JsonProcessingException {
 		ObjectMapper objectmapper =new ObjectMapper();
 		return objectmapper.writeValueAsString(this);
 	}
-
+	
 }
